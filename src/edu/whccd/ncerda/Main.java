@@ -1,42 +1,35 @@
 package edu.whccd.ncerda;
-import java.math.BigDecimal;
 import java.util.Scanner;
 import java.text.NumberFormat;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /*
-        The purpose of this application is to illustrate the InvoiceApp and replicate figure 3-17 from book.
+        The purpose of this application is to illustrate the InvoiceApp and replicate figure 3-13 from book.
         author:     Naomi Cerda
 */
 
 public class Main {
 
     public static void main(String[] args) {
-        final BigDecimal SALES_TAX_PCT = new BigDecimal(".05");
+        final double SALES_TAX_PCT = .05;
 
         Scanner sc = new Scanner(System.in);
         String choice = "y";
         while (choice.equalsIgnoreCase("y")) {
-            System.out.print("Enter subtotal:   ");
-            String subtotalString = sc.next();
+            System.out.print("Enter subtotal:               ");
+            double subtotal = sc.nextDouble();
 
-            // create the BigDecimal objects for subtotal and discount percent
-            BigDecimal subtotal = new BigDecimal(subtotalString);
-            BigDecimal discountPercent;
-            if (subtotal.doubleValue() >= 100) {
-                discountPercent = new BigDecimal(".1");
+            double discountPercent = 0.0;
+            if (subtotal >= 100) {
+                discountPercent = .1;
             } else {
-                discountPercent = new BigDecimal("0.0");
+                discountPercent = 0.0;
             }
 
             // calculate the results
-            BigDecimal discountAmount = subtotal.multiply(discountPercent)
-                    .setScale(2, RoundingMode.HALF_UP);
-            BigDecimal totalBeforeTax = subtotal.subtract(discountAmount);
-            BigDecimal salesTax = SALES_TAX_PCT.multiply(totalBeforeTax)
-                    .setScale(2, RoundingMode.HALF_UP);
-            BigDecimal total = totalBeforeTax.add(salesTax);
+            double discountAmount = subtotal * discountPercent;
+            double totalBeforeTax = subtotal - discountAmount;
+            double salesTax = totalBeforeTax * SALES_TAX_PCT;
+            double total = totalBeforeTax + salesTax;
 
             // format and display the results
             NumberFormat currency = NumberFormat.getCurrencyInstance();
